@@ -1,1 +1,1 @@
-salut flo
+print(salut flo)
