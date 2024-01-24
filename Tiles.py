@@ -76,13 +76,13 @@ class Tiles:
         # Mode 2 : multiflèche
         elif self.mode == 2:
             for i in range(self.nb_tiles):
-                tile = random.choice(0, 1, dtype=int)
+                tile = random.choice(0, 1, 2, 3, dtype=int)
                 tiles.append(tile)
 
         # Mode 3 : contre la montre
         elif self.mode == 3:
             for i in range(self.nb_tiles):
-                tile = random.choice(0, 1, dtype=int)
+                tile = random.choice(0, 1, 2, 3, dtype=int)
                 tiles.append(tile)
 
         # Séléction d'un mode n'existant pas
