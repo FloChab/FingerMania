@@ -5,14 +5,16 @@ class Tiles:
 
         # Dictionnaire associant un chiffre à une flèche du clavier
         self.dict_arrow = {
-            0: 'haut',
-            1: 'droit',
-            2: 'bas',
-            3: 'gauche'
+            0: 'gauche',
+            1: 'bas',
+            2: 'haut',
+            3: 'droite'
         }
+        self.score = 0
         self.mode = mode #mode de jeu
         self.niveau = niveau #niveaux du mode 1
         self.nb_tiles = nb_tiles #nombre de combinaison par partie
+
 
     # Fonction qui génère les combinaisons
     def get_tiles(self):
@@ -47,8 +49,7 @@ class Tiles:
                     # Choix de la séquence à ajouter, au hasard entre les deux
                     sequence = random.choices([sequence1, sequence2], probabilities)
                     # Ajout de la liste à notre tableau de combinaisons
-                    tiles.append(sequence)
-
+                    tiles.append(sequence[0])
             # Niveau 3 : combinaisons d'une, deux ou trois flèches
             elif self.niveau == 3:
                 for i in range(self.nb_tiles):
@@ -67,7 +68,7 @@ class Tiles:
                     # Choix de la séquence à ajouter, au hasard entre les trois
                     sequence = random.choices([sequence1, sequence2, sequence3], probabilities)
                     # Ajout de la liste à notre tableau de combinaisons
-                    tiles.append(sequence)
+                    tiles.append(sequence[0])
 
                 # Séléction d'un niveau n'existant pas
                 else:
@@ -143,6 +144,18 @@ class Tiles:
 
         return tiles_delay
 
+    def add_score(self,points):
+        self.score+=points
 
-
+    def wich_label(self,points):
+        if points < 25:
+            return 0
+        elif points >= 25 and points <= 50:
+            return 1
+        elif points >= 50 and points <=75:
+            return 2
+        elif points >= 75 and points < 100:
+            return 3
+        elif points == 100 :
+            return 4
 
