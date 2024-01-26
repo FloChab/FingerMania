@@ -2,14 +2,6 @@ import random
 
 class Tiles:
     def __init__(self, mode, niveau,nb_tiles):
-
-        # Dictionnaire associant un chiffre à une flèche du clavier
-        self.dict_arrow = {
-            0: 'gauche',
-            1: 'bas',
-            2: 'haut',
-            3: 'droite'
-        }
         self.score = 0
         self.mode = mode #mode de jeu
         self.niveau = niveau #niveaux du mode 1
