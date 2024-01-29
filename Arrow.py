@@ -1,14 +1,12 @@
 import pygame
 
-class Arrow():
+class Arrow:
 
-    def __init__(self, x, img, delay,direction):
+    def __init__(self, x, y, img, direction):
         self.direction = direction
         self.img = img
-        self.delay = delay
         self.x = x
-        # Coordonnée y
-        self.y = 600
+        self.y = y
 
     def get_y(self):
         return self.y
@@ -16,11 +14,7 @@ class Arrow():
     def set_y(self, y):
         self.y = y
 
-    def get_delay(self):
-        return self.delay
-
     def move(self):
-
         self.y-=5
 
     def is_y_valid(self):
@@ -29,5 +23,10 @@ class Arrow():
         else:
             return False
 
-
+class Arrow_with_time(Arrow):
+    def __init__(self, x, y, img, direction, delay):
+        Arrow.__init__(self, x, y, img, direction)
+        self.delay = delay
+    def get_delay(self):
+        return self.delay
 
