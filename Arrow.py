@@ -17,8 +17,8 @@ class Arrow:
     def move(self):
         self.y-=5
 
-    def is_y_valid(self):
-        if self.y > 0 and self.y < 200:
+    def is_y_valid(self, y_fixe, width_arrow):
+        if self.y > y_fixe - width_arrow  and self.y < y_fixe + width_arrow:
             return True
         else:
             return False

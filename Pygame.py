@@ -1,26 +1,24 @@
-#Import
+# Import
 import pygame
 import time
 import sys
 import os
 from Tiles import Menu
-from Arrow import Arrow
-from Label import Label
+#from Arrow import Arrow
+#from Label import Label # Si j'importe pas ça marche quand même je ne sais pas pourquoi ...
 from Mode import *
 
 # pygame setup
 pygame.init()
-# Initialisation de la fenêtre en mode plein écran
-# screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-screen = pygame.display.set_mode((1280, 720))
+# Initialisation de la fenêtre
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+# screen = pygame.display.set_mode((1280, 720))
 width_screen, height_screen = pygame.display.get_surface().get_size()
 pygame.display.set_caption("Menu Pygame")
 
 clock = pygame.time.Clock()
 running = True
 dt = 0
-#pygame.key.set_repeat()
-
 
 def afficher_texte(message, couleur, y, taille=36, x=None, police=None):
     if police is None:
@@ -183,7 +181,7 @@ while running:
                             case 0:
                                 jeu = Classic(screen)
                             case 1:
-                                jeu = Multi_Arrows()
+                                jeu = Multi_Arrows(screen)
                             case 2:
                                 jeu = Chrono()
                     elif (menu.level == None):
