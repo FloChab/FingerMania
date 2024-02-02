@@ -11,8 +11,8 @@ from Mode import *
 # pygame setup
 pygame.init()
 # Initialisation de la fenêtre
-screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
-# screen = pygame.display.set_mode((1280, 720))
+# screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((1280, 720))
 width_screen, height_screen = pygame.display.get_surface().get_size()
 pygame.display.set_caption("Menu Pygame")
 
@@ -75,7 +75,7 @@ arrows=[]
 menu = Menu()
 
 while running:
-    # fill the screen with a color to wipe away anything from last frame
+    # Fill the screen with purple
     screen.fill("purple")
 
     # Affichage de la bannière "Menu"
@@ -123,9 +123,11 @@ while running:
         if jeu.timer == None:
             print("Initialisation d'une partie")
             jeu.init()
+            jeu.music.start_music()
             # print(jeu.arrows)
         if len(jeu.arrows) != 0:
             jeu.play(screen)
+
 
             # print(keys)
             if keys[pygame.K_LEFT] and allow_left == True:
@@ -159,6 +161,7 @@ while running:
             menu.mode = None
             menu.level = None
             jeu.timer = None
+            jeu.music.stop_music()
 
     if keys[pygame.K_ESCAPE]:
         pygame.quit()
@@ -201,7 +204,7 @@ while running:
     # limits FPS to 60
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
-    dt = clock.tick(60) / 1000
+    dt = clock.tick(65) / 1000
 
 pygame.quit()
 

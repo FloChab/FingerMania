@@ -4,6 +4,7 @@ import os
 import time
 from Label import Label
 from Arrow import *
+from Music import Music
 
 FONT_PATH = os.path.join(os.path.dirname(__file__), 'PressStart2P-Regular.ttf')
 class Mode:
@@ -19,6 +20,7 @@ class Mode:
         arrow_up = pygame.image.load("arrow_up.png")
         arrow_right = pygame.image.load("arrow_right.png")
         self.img_arrows = [arrow_left, arrow_down, arrow_up, arrow_right]
+        self.music = Music()
     def create_tiles(self):
         for i in range(self.nb_tiles):
             tile = random.choice([0, 1, 2, 3])
@@ -144,6 +146,7 @@ class Classic(Mode):
         self.create_tiles()
         self.create_tiles_delay()
         self.create_arrows()
+        self.start_music()
         self.timer = time.time()
     def display_score(self, screen, x, y, w, h, text_color=(0, 0, 0), border_color=(0, 0, 0), background_color=(255, 255, 255)):
 
@@ -218,7 +221,7 @@ class Multi_Arrows(Mode):
 
     def display_score(self, screen, x, y, w, h, text_color=(0, 0, 0), border_color=(0, 0, 0), background_color=(255, 255, 255)):
 
-        font_size = h // 6
+        font_size = h // 8
         font = pygame.font.Font(FONT_PATH, font_size)
         text_font = font.render("Score: {}".format(self.score), True, text_color)
         rect_score = text_font.get_rect(center=(w // 2, h // 2))
@@ -232,7 +235,8 @@ class Multi_Arrows(Mode):
         for arrow in self.arrows:
             if arrow.direction == direction:
                 if arrow.is_y_valid(self.y_arrow_fixe, self.width_arrow):
-                    points = 100 - abs(arrow.y - self.y_arrow_fixe)
+                    points = round(100 - abs(arrow.y - self.y_arrow_fixe) / self.width_arrow * 100)
+                    print(points)
                     self.score += points
                     k = self.wich_label(points)
                     self.arrows.remove(arrow)
@@ -247,7 +251,7 @@ class Multi_Arrows(Mode):
         # Afficher les images de flèches fixe
         screen.blit(self.arrow_multi_fixe, (self.x_arrow, self.y_arrow_fixe))
         # Afficher le score
-        self.display_score(screen, screen.get_width() // 6, screen.get_height() // 8, screen.get_width() // 6, self.width_arrow)
+        self.display_score(screen, screen.get_width() // 20, screen.get_height() // 8, screen.get_width() // 4, self.width_arrow // 2)
 
         for arrow in self.arrows:
             if arrow.get_delay() <= time.time() - self.timer:
