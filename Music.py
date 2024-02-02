@@ -19,8 +19,6 @@ class Music:
         pygame.mixer.music.load(self.music)
         # Lancer la musique
         pygame.mixer.music.play()
-        # Attendre 1 secondes pour que la musique puisse être entendue
-        time.sleep(1)
 
     def stop_music(self):
         # Arrêter la musique à la fin de la partie
