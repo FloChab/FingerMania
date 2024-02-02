@@ -21,11 +21,8 @@ class Mode:
         self.img_arrows = [arrow_left, arrow_down, arrow_up, arrow_right]
     def create_tiles(self):
         for i in range(self.nb_tiles):
-            tile = random.choice(0, 1, 2, 3, dtype=int)
+            tile = random.choice([0, 1, 2, 3])
             self.tiles.append(tile)
-
-    def add_score(self, points):
-        self.score = self.score + points
 
     def wich_label(self, points):
         if points <= 0:
@@ -141,7 +138,7 @@ class Classic(Mode):
         for i in range(len(self.tiles)):
             for j in range(len(self.tiles[i])):
                 if self.tiles[i][j] == 1:
-                    self.arrows.append(Arrow_with_time(self.x_arrow + j * self.width_arrow, 4 * self.width_arrow, pygame.transform.scale(self.img_arrows[j],(self.width_arrow, self.width_arrow)), j, self.tiles_delay[i]))
+                    self.arrows.append(Arrow_with_time(self.x_arrow + j * self.width_arrow, self.y_arrow_pop, pygame.transform.scale(self.img_arrows[j],(self.width_arrow, self.width_arrow)), j, self.tiles_delay[i]))
 
     def init(self):
         self.create_tiles()
@@ -179,7 +176,7 @@ class Classic(Mode):
     def arrow_pressed(self, direction):
         for arrow in self.arrows:
             if arrow.direction == direction:
-                if arrow.is_y_valid():
+                if arrow.is_y_valid(self.y_arrow_fixe,self.width_arrow):
                     points = 100 - abs(arrow.y - self.y_arrow_fixe)
                     self.score += points
                     k = self.wich_label(points)
@@ -191,10 +188,16 @@ class Classic(Mode):
         return k
 
 class Multi_Arrows(Mode):
-    def __init__(self):
+    def __init__(self, screen):
         Mode.__init__(self)
         self.tiles_delay = []
         self.level = None
+        self.width_arrow = screen.get_width() // 6
+        self.x_arrow = screen.get_width() // 2 - self.width_arrow // 2
+        self.y_arrow_fixe = self.width_arrow
+        self.y_arrow_pop = screen.get_height() - self.width_arrow # Bas de l'écran
+        self.arrow_multi_fixe = pygame.transform.scale(pygame.image.load("multi_arrow_fixe.png"),
+                                                      (self.width_arrow, self.width_arrow))
     def create_tiles_delay(self):
         delai = 0
         for i in range(self.nb_tiles):
@@ -202,6 +205,56 @@ class Multi_Arrows(Mode):
             self.tiles_delay.append((round(2.0+delai, 1)))
             delai += 2
 
+    def create_arrows(self):
+        for i in range(len(self.tiles)):
+            self.arrows.append(Arrow_with_time(self.x_arrow, self.y_arrow_pop,
+                                                       pygame.transform.scale(self.img_arrows[self.tiles[i]], (self.width_arrow, self.width_arrow)), self.tiles[i], self.tiles_delay[i]))
+
+    def init(self):
+        self.create_tiles()
+        self.create_tiles_delay()
+        self.create_arrows()
+        self.timer = time.time()
+
+    def display_score(self, screen, x, y, w, h, text_color=(0, 0, 0), border_color=(0, 0, 0), background_color=(255, 255, 255)):
+
+        font_size = h // 6
+        font = pygame.font.Font(FONT_PATH, font_size)
+        text_font = font.render("Score: {}".format(self.score), True, text_color)
+        rect_score = text_font.get_rect(center=(w // 2, h // 2))
+        surface_score = pygame.Surface((w, h))
+        surface_score.fill(background_color)  # Remplir le rectangle avec la couleur blanc
+        pygame.draw.rect(surface_score, border_color, surface_score.get_rect(), 4)  # Dessiner le contour noir
+        surface_score.blit(text_font, rect_score)
+        screen.blit(surface_score, (x, y))
+
+    def arrow_pressed(self, direction):
+        for arrow in self.arrows:
+            if arrow.direction == direction:
+                if arrow.is_y_valid(self.y_arrow_fixe, self.width_arrow):
+                    points = 100 - abs(arrow.y - self.y_arrow_fixe)
+                    self.score += points
+                    k = self.wich_label(points)
+                    self.arrows.remove(arrow)
+                    return k
+        points = -50
+        self.score += points
+        k = self.wich_label(points)
+        return k
+
+    def play(self,screen):
+        screen.fill("purple")
+        # Afficher les images de flèches fixe
+        screen.blit(self.arrow_multi_fixe, (self.x_arrow, self.y_arrow_fixe))
+        # Afficher le score
+        self.display_score(screen, screen.get_width() // 6, screen.get_height() // 8, screen.get_width() // 6, self.width_arrow)
+
+        for arrow in self.arrows:
+            if arrow.get_delay() <= time.time() - self.timer:
+                screen.blit(arrow.img, (arrow.x, arrow.y))
+                arrow.move()
+            if arrow.y < 0:
+                self.arrows.remove(arrow)
 
 class Chrono(Mode):
     def __init__(self):
