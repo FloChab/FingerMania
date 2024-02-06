@@ -4,6 +4,7 @@ import os
 import time
 from Label import Label
 from Arrow import *
+from Music import Music
 
 FONT_PATH = os.path.join(os.path.dirname(__file__), 'PressStart2P-Regular.ttf')
 class Mode:
@@ -12,6 +13,7 @@ class Mode:
         self.timer = None
         self.nb_tiles = 50
         self.tiles = []
+        self.music = Music()
     # self.labels = [Label("mauvais.png"), Label("ok.png"), Label("bien.png"), Label("tb.png"), Label("parfait.png")]
         self.arrows = []
         arrow_left = pygame.image.load("arrow_left.png")
@@ -177,7 +179,7 @@ class Classic(Mode):
         for arrow in self.arrows:
             if arrow.direction == direction:
                 if arrow.is_y_valid(self.y_arrow_fixe,self.width_arrow):
-                    points = 100 - abs(arrow.y - self.y_arrow_fixe)
+                    points = round(100 - abs(arrow.y - self.y_arrow_fixe)/self.width_arrow*100)
                     self.score += points
                     k = self.wich_label(points)
                     self.arrows.remove(arrow)
@@ -232,7 +234,7 @@ class Multi_Arrows(Mode):
         for arrow in self.arrows:
             if arrow.direction == direction:
                 if arrow.is_y_valid(self.y_arrow_fixe, self.width_arrow):
-                    points = 100 - abs(arrow.y - self.y_arrow_fixe)
+                    points = round(100 - abs(arrow.y - self.y_arrow_fixe)/self.width_arrow*100)
                     self.score += points
                     k = self.wich_label(points)
                     self.arrows.remove(arrow)
