@@ -4,8 +4,8 @@ import time
 import sys
 import os
 from Tiles import Menu
-#from Arrow import Arrow
-#from Label import Label # Si j'importe pas ça marche quand même je ne sais pas pourquoi ...
+# from Arrow import Arrow
+# from Label import Label # Si j'importe pas ça marche quand même je ne sais pas pourquoi ...
 from Mode import *
 
 # pygame setup
@@ -20,7 +20,8 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-def afficher_texte(message, couleur, y, taille=36, x=None, police=None):
+
+def afficher_texte (message, couleur, y, taille=36, x=None, police=None):
     if police is None:
         police = police_grande
     texte = police.render(message, True, couleur)
@@ -30,7 +31,8 @@ def afficher_texte(message, couleur, y, taille=36, x=None, police=None):
     screen.blit(texte, texte_rect)
     return texte_rect
 
-def afficher_texte_petit(message, couleur, y, x=None):
+
+def afficher_texte_petit (message, couleur, y, x=None):
     texte = police_petite.render(message, True, couleur)
     if x is None:
         x = width_screen // 2
@@ -49,12 +51,12 @@ police_petite = pygame.font.Font(FONT_PATH, 18)
 # SCORE_RECT_HEIGHT = 50
 
 # Création des labels
-rate = Label("rate.png",screen)
-mauvais = Label("mauvais.png",screen)
-ok = Label("ok.png",screen)
-bien = Label("bien.png",screen)
-tb = Label("tb.png",screen)
-parfait = Label("parfait.png",screen)
+rate = Label("rate.png", screen)
+mauvais = Label("mauvais.png", screen)
+ok = Label("ok.png", screen)
+bien = Label("bien.png", screen)
+tb = Label("tb.png", screen)
+parfait = Label("parfait.png", screen)
 labels = [rate, mauvais, ok, bien, tb, parfait]
 
 allow_left = True
@@ -69,9 +71,9 @@ GREY = (169, 169, 169)
 PURPLE = "purple"
 
 jeu = None
-keys=None
+keys = None
 k = None
-arrows=[]
+arrows = []
 menu = Menu()
 
 while running:
@@ -89,7 +91,7 @@ while running:
     bouton_y_positions = [300, 400, 500]
 
     keys = pygame.key.get_pressed()
-    if(menu.mode == None):
+    if (menu.mode == None):
         for i, y in enumerate(bouton_y_positions):
             pygame.draw.rect(screen, WHITE, (50, y, (width_screen - 100), 80))
             pygame.draw.rect(screen, BLACK, (50, y, (width_screen - 100), 80), 3)
@@ -104,7 +106,7 @@ while running:
             elif i == 2:
                 caract = "Contre la Montre"
             afficher_texte_petit(caract, PURPLE, y + 60)
-    elif(menu.level == None):
+    elif (menu.level == None and menu.mode != 3):
         for i, y in enumerate(bouton_y_positions):
             pygame.draw.rect(screen, WHITE, (50, y, (width_screen - 100), 80))
             pygame.draw.rect(screen, BLACK, (50, y, (width_screen - 100), 80), 3)
@@ -174,7 +176,7 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN:
             x, y = pygame.mouse.get_pos()
             for i, bouton_y in enumerate(bouton_y_positions):
-                if 50 <= x <= width_screen - 50 and bouton_y <= y <= bouton_y + 80:#Si on est sur un des boutons
+                if 50 <= x <= width_screen - 50 and bouton_y <= y <= bouton_y + 80:  # Si on est sur un des boutons
                     if (menu.mode == None):
                         menu.mode = i + 1
                         match i:
@@ -183,12 +185,10 @@ while running:
                             case 1:
                                 jeu = Multi_Arrows(screen)
                             case 2:
-                                jeu = Chrono()
+                                jeu = Chrono(screen)
                     elif (menu.level == None):
                         jeu.level = i + 1
                         menu.level = i + 1
-
-
 
         # Vérification du clic sur le bouton "Quitter"
     if event.type == pygame.MOUSEBUTTONDOWN and rect_quitter.collidepoint(pygame.mouse.get_pos()):
@@ -204,5 +204,3 @@ while running:
     dt = clock.tick(60) / 1000
 
 pygame.quit()
-
-
