@@ -156,14 +156,31 @@ while running:
                 allow_right = True
 
             if k is not None:
+
                 screen.blit(labels[k].image, (labels[k].x, labels[k].y))
 
         else:
             jeu.music.stop_music()
+            # Dimensions de la fenêtre display_final_score
+            fenetre_w = 600
+            fenetre_h = 200
+
+            # Calcul des coordonnées pour centrer la fenêtre
+            x = (width_screen - fenetre_w) // 2
+            y = (height_screen - fenetre_h) // 4
+
+            # Appel de la méthode display_final_score pour afficher le score final
+            if menu.mode == 1 or menu.mode == 2:
+                jeu.display_final_score(screen, x, y, fenetre_w, fenetre_h)
+            elif menu.mode == 3:
+                jeu.timer = time.time() - jeu.timer
+                jeu.display_final_time(screen, x, y, fenetre_w, fenetre_h)
+            pygame.display.flip()  # Rafraîchir l'écran pour afficher le score final
+            time.sleep(5)  # Afficher le score final et le rang durant 5 secondes
+
             menu.mode = None
             menu.level = None
             jeu.timer = None
-
 
     if keys[pygame.K_ESCAPE]:
         pygame.quit()

@@ -11,7 +11,7 @@ class Mode:
     def __init__(self):
         self.score = 0
         self.timer = None
-        self.nb_tiles = 50
+        self.nb_tiles = 5
         self.tiles = []
         self.music = Music()
     # self.labels = [Label("mauvais.png"), Label("ok.png"), Label("bien.png"), Label("tb.png"), Label("parfait.png")]
@@ -158,6 +158,40 @@ class Classic(Mode):
         pygame.draw.rect(surface_score, border_color, surface_score.get_rect(), 4)  # Dessiner le contour noir
         surface_score.blit(text_font, rect_score)
         screen.blit(surface_score, (x, y))
+
+    def display_final_score (self, screen, x, y, w, h, text_color=(0, 0, 0), border_color=(0, 0, 0),
+                             background_color=(255, 255, 255)):
+        screen.fill('purple')  # affiche
+        font_size = h // 6
+        font = pygame.font.Font(FONT_PATH, font_size)
+        text_font = font.render("Score Final : {}".format(self.score), True, text_color)
+        rect_score = text_font.get_rect(center=(w // 2, h // 2))
+        surface_score = pygame.Surface((w, h))
+        surface_score.fill(background_color)
+        pygame.draw.rect(surface_score, border_color, surface_score.get_rect(), 4)
+        surface_score.blit(text_font, rect_score)
+        screen.blit(surface_score, (x, y))
+
+        if self.score < 0:
+            position = "Apprenti Rythmique"
+            image = "Memes_score_final/rang1.jpeg"
+        elif 0 <= self.score <= 4000:
+            position = "Écuyer Musical"
+            image = "Memes_score_final/rang2.jpeg"
+        elif 4000 < self.score <= 7000:
+            position = "Virtuose du Rythme"
+            image = "Memes_score_final/rang3.jpeg"
+        else:
+            position = "Maître de la Mélodie"
+            image = "Memes_score_final/rang4.jpeg"
+
+        # Affichage du texte (postition + message)
+        text_font = font.render(f"Vous êtes : {position}", True, text_color)
+        screen.blit(text_font, (x // 2, y // 2))
+
+        # Chargement et affichage de l'image
+        image_aff = pygame.image.load(image)
+        screen.blit(image_aff, (x + 200, y + 300))
     def play(self,screen):
         screen.fill("purple")
         # Afficher les images de flèches fixe
@@ -230,6 +264,40 @@ class Multi_Arrows(Mode):
         surface_score.blit(text_font, rect_score)
         screen.blit(surface_score, (x, y))
 
+    def display_final_score (self, screen, x, y, w, h, text_color=(0, 0, 0), border_color=(0, 0, 0),
+                             background_color=(255, 255, 255)):
+        screen.fill('purple')  # affiche
+        font_size = h // 6
+        font = pygame.font.Font(FONT_PATH, font_size)
+        text_font = font.render("Score Final : {}".format(self.score), True, text_color)
+        rect_score = text_font.get_rect(center=(w // 2, h // 2))
+        surface_score = pygame.Surface((w, h))
+        surface_score.fill(background_color)
+        pygame.draw.rect(surface_score, border_color, surface_score.get_rect(), 4)
+        surface_score.blit(text_font, rect_score)
+        screen.blit(surface_score, (x, y))
+
+        if self.score < 0:
+            position = "Apprenti Rythmique"
+            image = "Memes_score_final/rang1.jpeg"
+        elif 0 <= self.score <= 4000:
+            position = "Écuyer Musical"
+            image = "Memes_score_final/rang2.jpeg"
+        elif 4000 < self.score <= 7000:
+            position = "Virtuose du Rythme"
+            image = "Memes_score_final/rang3.jpeg"
+        else:
+            position = "Maître de la Mélodie"
+            image = "Memes_score_final/rang4.jpeg"
+
+        # Affichage du texte (postition + message)
+        text_font = font.render(f"Vous êtes : {position}", True, text_color)
+        screen.blit(text_font, (x // 2, y // 2))
+
+        # Chargement et affichage de l'image
+        image_aff = pygame.image.load(image)
+        screen.blit(image_aff, (x + 200, y + 300))
+
     def arrow_pressed(self, direction):
         for arrow in self.arrows:
             if arrow.direction == direction:
@@ -249,7 +317,7 @@ class Multi_Arrows(Mode):
         # Afficher les images de flèches fixe
         screen.blit(self.arrow_multi_fixe, (self.x_arrow, self.y_arrow_fixe))
         # Afficher le score
-        self.display_score(screen, screen.get_width() // 6, screen.get_height() // 8, screen.get_width() // 6, self.width_arrow)
+        self.display_score(screen, screen.get_width() // 22, screen.get_height() // 8, screen.get_width() // 3, self.width_arrow)
 
         for arrow in self.arrows:
             if arrow.get_delay() <= time.time() - self.timer:
@@ -327,3 +395,37 @@ class Chrono(Mode):
             return 2
         else:
             return 1
+
+    def display_final_time (self, screen, x, y, w, h, text_color=(0, 0, 0), border_color=(0, 0, 0),
+                             background_color=(255, 255, 255)):
+        screen.fill('purple')  # affiche
+        font_size = h // 6
+        font = pygame.font.Font(FONT_PATH, font_size)
+        text_font = font.render("Time : {:.3f}".format(self.timer), True, text_color)
+        rect_score = text_font.get_rect(center=(w // 2, h // 2))
+        surface_score = pygame.Surface((w, h))
+        surface_score.fill(background_color)
+        pygame.draw.rect(surface_score, border_color, surface_score.get_rect(), 4)
+        surface_score.blit(text_font, rect_score)
+        screen.blit(surface_score, (x, y))
+
+        if self.timer > 25:
+            position = "Apprenti Rythmique"
+            image = "Memes_score_final/rang1.jpeg"
+        elif self.timer <= 25 and self.timer <20:
+            position = "Écuyer Musical"
+            image = "Memes_score_final/rang2.jpeg"
+        elif self.timer <= 20 and self.timer <15:
+            position = "Virtuose du Rythme"
+            image = "Memes_score_final/rang3.jpeg"
+        else:
+            position = "Maître de la Mélodie"
+            image = "Memes_score_final/rang4.jpeg"
+
+        # Affichage du texte (postition + message)
+        text_font = font.render(f"Vous êtes : {position}", True, text_color)
+        screen.blit(text_font, (x // 2, y // 2))
+
+        # Chargement et affichage de l'image
+        image_aff = pygame.image.load(image)
+        screen.blit(image_aff, (x + 200, y + 300))
