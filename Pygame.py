@@ -125,6 +125,7 @@ while running:
         if jeu.timer == None:
             print("Initialisation d'une partie")
             jeu.init()
+            jeu.music.play_music()
             # print(jeu.arrows)
         if len(jeu.arrows) != 0:
             jeu.play(screen)
@@ -158,9 +159,11 @@ while running:
                 screen.blit(labels[k].image, (labels[k].x, labels[k].y))
 
         else:
+            jeu.music.stop_music()
             menu.mode = None
             menu.level = None
             jeu.timer = None
+
 
     if keys[pygame.K_ESCAPE]:
         pygame.quit()
